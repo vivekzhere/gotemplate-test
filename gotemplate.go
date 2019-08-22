@@ -3,27 +3,23 @@ package main
 import (
 	"bytes"
 	"fmt"
+	"io/ioutil"
 	"strings"
 	"text/template"
 )
 
 func main() {
-	content := `{{- $instanceName := "" }}
-	{{- with .instance.metadata.name }}
-	{{- $instanceName = . }}
-	{{- end }}
-	{{- $bindingName := "" }}
-	{{- with .binding.metadata.name }}
-	{{- $bindingName = . }}
-	{{- end }}
-	bind:
-	  response: {{ (printf "'{ \"credentials\" : %s %s }'" $instanceName $bindingName ) }}
-	  state: "in progress"`
-
 	values := newValues()
 	values.set(".instance.metadata.name", "hello")
 	values.set(".binding.metadata.name", "world")
 
+	data, err := ioutil.ReadFile("template.yaml")
+	if err != nil {
+		fmt.Printf("Failed to read template file: %v\n", err)
+		return
+	}
+
+	content := string(data)
 	testGoTemplate(content, values)
 }
 

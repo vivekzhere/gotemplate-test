@@ -1,0 +1,11 @@
+{{- $instanceName := "" }}
+{{- with .instance.metadata.name }}
+{{- $instanceName = . }}
+{{- end }}
+{{- $bindingName := "" }}
+{{- with .binding.metadata.name }}
+{{- $bindingName = . }}
+{{- end -}}
+bind:
+  response: {{ (printf "'{ \"credentials\" : %s %s }'" $instanceName $bindingName ) }}
+  state: "in progress"
