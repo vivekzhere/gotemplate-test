@@ -1,8 +1,9 @@
 # Gotemplate Test
 
-This is a sample project for testing gotemplate. Edit the `main` function and `template.yaml` to your requirements.
-Put your gotemplate in `template.yaml` file and set the values used inside the gotemplate in `values` object in `main` function.
-If you want to use `.instance.metadata.name` inside your gotemplate, use `values.set(".instance.metadata.name", "hello")` to set the value as `hello`.
+This is a sample project for testing gotemplate. Edit the `template.yaml` and `values.yaml` to your requirements.
+Put your gotemplate in `template.yaml` file. Put all the values needed inside the gotemplate in `values.yaml`.
+
+This project supports the additional functions supported by [service fabrik interoperator](https://github.com/cloudfoundry-incubator/service-fabrik-broker/tree/master/interoperator) within gotemplate.
 
 
 ## Build and run:

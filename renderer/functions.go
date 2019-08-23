@@ -1,4 +1,4 @@
-package gotemplates
+package renderer
 
 import (
 	"encoding/base64"

@@ -1,4 +1,4 @@
-package gotemplates
+package renderer
 
 import (
 	"bytes"
@@ -6,8 +6,10 @@ import (
 	"text/template"
 )
 
-func TestGoTemplate(content string, values map[string]interface{}) {
-	engine, err := template.New("test").Funcs(getFuncMap()).Parse(content)
+// RenderGoTemplate renders a gotemplate with corresponding values
+// and prints the output
+func RenderGoTemplate(templateString string, values map[string]interface{}) {
+	engine, err := template.New("test").Funcs(getFuncMap()).Parse(templateString)
 	if err != nil {
 		fmt.Printf("Failed to create renderer: %v\n", err)
 		return

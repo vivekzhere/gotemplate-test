@@ -4,20 +4,26 @@ import (
 	"fmt"
 	"io/ioutil"
 
-	"github.wdf.sap.corp/i332859/gotemplate-test/gotemplates"
+	yaml "gopkg.in/yaml.v2"
+
+	"github.wdf.sap.corp/i332859/gotemplate-test/renderer"
 )
 
 func main() {
-	values := gotemplates.NewValues()
-	values.Set(".instance.metadata.name", "hello")
-	values.Set(".binding.metadata.name", "world")
-
-	data, err := ioutil.ReadFile("template.yaml")
+	templateData, err := ioutil.ReadFile("template.yaml")
 	if err != nil {
 		fmt.Printf("Failed to read template file: %v\n", err)
 		return
 	}
+	content := string(templateData)
 
-	content := string(data)
-	gotemplates.TestGoTemplate(content, values)
+	valuesData, err := ioutil.ReadFile("values.yaml")
+	if err != nil {
+		fmt.Printf("Failed to read values file: %v\n", err)
+		return
+	}
+	values := make(map[string]interface{})
+	yaml.Unmarshal(valuesData, &values)
+
+	renderer.RenderGoTemplate(content, values)
 }

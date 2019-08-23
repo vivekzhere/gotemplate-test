@@ -1,0 +1,6 @@
+instance:
+  metadata:
+    name: hello
+binding:
+  metadata:
+    name: world
