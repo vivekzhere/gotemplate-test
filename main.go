@@ -23,7 +23,11 @@ func main() {
 		return
 	}
 	values := make(map[string]interface{})
-	yaml.Unmarshal(valuesData, &values)
+	err = yaml.Unmarshal(valuesData, &values)
+	if err != nil {
+		fmt.Printf("Failed to Unmarshal values file: %v\n", err)
+		return
+	}
 
 	renderer.RenderGoTemplate(content, values)
 }
