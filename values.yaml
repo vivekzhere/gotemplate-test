@@ -1,6 +1,51 @@
 instance:
   metadata:
     name: hello
-binding:
-  metadata:
-    name: world
+    namespace: default
+  spec:
+    parameters:
+      esaccess: false
+
+plan:
+  spec:
+    bindable: true
+    context:
+      clusterdomain: .i321593.logging.sapcloud.io
+      elasticsearch:
+        ingrsessEnabled: true
+        data:
+          cpu: 500m
+          disk: 1Gi
+          memory: 2048Mi
+        master:
+          cpu: 500m
+          disk: 1Gi
+          memory: 1024Mi
+      fluentd:
+        cpu: 200m
+        memory: 512Mi
+      kibana:
+        cpu: 500m
+        memory: 1024Mi
+      functiongetspace: '{{ getSpace .Spec.Es.Data.MaxNodeCount .Spec.Es.Data.VolumeStorage
+        .Spec.Es.Data.Percentage }}'
+    description: Application logging service running inside K8 container as a custom
+      resource
+    free: true
+    id: 872131dc-7011-11e9-a923-1681be663d3e
+    manager:
+      async: true
+      settings:
+        dashboard_url_template: aHR0cHM6Ly9raWJhbmEtc2YtaW5zdGFuY2VpZC5pMzIxNTkzLmxvZ2dpbmcuY2xvdWQuc2FwLmlv
+    metadata:
+      bullets:
+      - Container Deployment
+      - 512MB Elastic search node
+      - 1GB Disk
+      costs:
+      - amount:
+          usd: 0
+        unit: MONTHLY
+      service-inventory-key: SERVICE-TBD
+    name: standard
+    serviceId: 74726c04-7011-11e9-a923-1681be663d3e

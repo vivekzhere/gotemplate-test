@@ -1,11 +1,43 @@
-{{- $instanceName := "" }}
-{{- with .instance.metadata.name }}
-{{- $instanceName = . }}
+{{- $name := "" }}
+{{- with .instance.metadata.name }} {{ $name = . }} {{ end }}
+{{- $namespace := "" }}
+{{- with .instance.metadata.namespace }} {{ $namespace = . }} {{ end }}
+{{- $ingress := "" }}
+{{- with .plan.spec.context.clusterdomain }} {{ $ingress = . }} {{ end }}
+{{- $fluentD := dict }}
+{{- with .plan.spec.context.fluentd }} {{ $fluentD = . }} {{ end }}
+{{- $kibana := dict }}
+{{- with .plan.spec.context.kibana }} {{ $kibana = . }} {{ end }}
+{{- $elasticsearch := dict }}
+{{- with .plan.spec.context.elasticsearch }} {{ $elasticsearch = . }} {{ end }}
+{{- $functiongetspace := "" }}
+{{- with .plan.spec.context.functiongetspace }} {{ $functiongetspace = . }} {{ end }}
+{{ $esingressEnabled := "false" }}
+{{- with $elasticsearch.ingressEnabled }} {{ $esingressEnabled = . }} {{ end }}
+{{- with  .instance.spec.parameters.esaccess }}
+  {{- if . }}
+    {{- $esingressEnabled = . }}
+  {{- end }}
 {{- end }}
-{{- $bindingName := "" }}
-{{- with .binding.metadata.name }}
-{{- $bindingName = . }}
-{{- end -}}
-bind:
-  response: {{ (printf "'{ \"credentials\" : %s %s }'" $instanceName $bindingName ) }}
-  state: "in progress"
+apiVersion: sap.com/v1alpha1
+kind: ECKF
+metadata:
+  name: eckf-{{ $name }}
+  namespace: {{ $namespace }}
+spec:
+  elasticsearch:
+    ingressEnabled: {{ $esingressEnabled }}
+    data:
+      cpu: {{ $elasticsearch.data.cpu }}
+      disk: {{ $elasticsearch.data.disk }}
+      memory: {{ $elasticsearch.data.memory }}
+    master:
+      cpu: {{ $elasticsearch.master.cpu }}
+      disk: {{ $elasticsearch.master.disk }}
+      memory: {{ $elasticsearch.master.memory }}
+  fluentd:
+    cpu: {{ $fluentD.cpu }}
+    memory: {{ $fluentD.memory }}
+  kibana:
+    cpu: {{ $kibana.cpu }}
+    memory: {{ $kibana.memory }}
