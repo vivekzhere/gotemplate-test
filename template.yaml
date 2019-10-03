@@ -19,10 +19,10 @@
     {{- $esingressEnabled = . }}
   {{- end }}
 {{- end }}
-apiVersion: sap.com/v1alpha1
-kind: ECKF
+apiVersion: abc.com/v1alpha1
+kind: ABCD
 metadata:
-  name: eckf-{{ $name }}
+  name: abcd-{{ $name }}
   namespace: {{ $namespace }}
 spec:
   elasticsearch:

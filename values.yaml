@@ -10,7 +10,7 @@ plan:
   spec:
     bindable: true
     context:
-      clusterdomain: .i321593.logging.sapcloud.io
+      clusterdomain: .abd.efg.hij.io
       elasticsearch:
         ingrsessEnabled: true
         data:
@@ -29,14 +29,13 @@ plan:
         memory: 1024Mi
       functiongetspace: '{{ getSpace .Spec.Es.Data.MaxNodeCount .Spec.Es.Data.VolumeStorage
         .Spec.Es.Data.Percentage }}'
-    description: Application logging service running inside K8 container as a custom
-      resource
+    description: hello world
     free: true
     id: 872131dc-7011-11e9-a923-1681be663d3e
     manager:
       async: true
       settings:
-        dashboard_url_template: aHR0cHM6Ly9raWJhbmEtc2YtaW5zdGFuY2VpZC5pMzIxNTkzLmxvZ2dpbmcuY2xvdWQuc2FwLmlv
+        dashboard_url_template: aHR0cHM6Ly9hYmMtc2YtaW5zdGFuY2VpZC5hYmMuZGVmLmhpai5pbwo=
     metadata:
       bullets:
       - Container Deployment
