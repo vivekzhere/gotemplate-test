@@ -5,6 +5,13 @@ instance:
   spec:
     parameters:
       esaccess: false
+binding:
+  metadata:
+    name: 24731fb8-7b84-5f57-914f-d3d55d793dd4
+    namespace: default
+  spec:
+    parameters:
+      esaccess: false
 
 plan:
   spec:
@@ -48,3 +55,17 @@ plan:
       service-inventory-key: SERVICE-TBD
     name: standard
     serviceId: 74726c04-7011-11e9-a923-1681be663d3e
+
+secret:
+  data:
+    POSTGRES_PASSWORD: cGFzc3dvcmQK
+    fluentdPassword_24731fb8-7b84-5f57-914f-d3d55d793dd4: cGFzc3dvcmQK
+
+service:
+  spec:
+    clusterIP: 192.168.55.65
+
+xsuaaBinding:
+  status:
+    state: succeeded
+    response: '{"uaa":{"apiurl":"sss","clientid":"ssss","clientsecret":"sss=","identityzone":"service-fabrik","identityzoneid":"service-fabrik","sburl":"sss","tenantid":"service-fabrik","tenantmode":"dedicated","uaadomain":"authentication.com","url":"https://service.com","verificationkey":"-----BEGIN PUBLIC KEY-----MI-----END PUBLIC KEY-----","xsappname":"products"}}'

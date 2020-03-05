@@ -19,6 +19,42 @@
     {{- $esingressEnabled = . }}
   {{- end }}
 {{- end }}
+{{- $fluentdUserKey := printf "fluentdUsername_%s" .binding.metadata.name }}
+{{- $fluentdUserEnc :=  index .secret.data $fluentdUserKey}}
+{{- $fluentdUser := "" }}
+{{- with $fluentdUserEnc }}
+  {{- $fluentdUser = b64dec $fluentdUserEnc }}
+{{- end }}
+{{- $fluentdPasswordKey := printf "fluentdPassword_%s" .binding.metadata.name }}
+{{- $fluentdPasswordEnc :=  index .secret.data $fluentdPasswordKey}}
+{{- $fluentdPassword := "" }}
+{{- with $fluentdPasswordEnc }}
+  {{- $fluentdPassword = b64dec $fluentdPasswordEnc }}
+{{- end }}
+
+{{- $host := "" }}
+{{- with .service.spec.clusterIP }} {{ $host = . }} {{ end }}
+{{- $pass := "" }}
+{{- with .secret.data.POSTGRES_PASSWORD }} {{ $pass = (b64dec .) }} {{ end }}
+{{- $xsuaaCreds := "" }}
+{{- with .xsuaaBinding.status }}
+  {{- if eq .state "succeeded"}}
+    {{ $xsuaaCreds = .response }}
+  {{- end }}
+{{ end }}
+{{- $stateString := "in progress" }}
+{{- if and (and (not (eq $host "")) (not (eq $pass ""))) (not (eq $xsuaaCreds "")) }}
+  {{- $stateString = "succeeded" }}
+{{- end }}
+{{- $responseString := "" }}
+{{- if eq $stateString "succeeded"}}
+  {{- $xsuaaCredsMap := unmarshalJSON $xsuaaCreds }}
+  {{- $responseMap := dict "credentials" (dict "host" $host "username" "postgres" "password" $pass) "xsuaa" $xsuaaCredsMap }}
+  {{- $responseString = mustToJson $responseMap }}
+{{- end }}
+xsuaaCreds: {{ $xsuaaCreds }}
+stateString: {{ $stateString }}
+responseString: {{ $responseString }}
 apiVersion: abc.com/v1alpha1
 kind: ABCD
 metadata:
@@ -38,6 +74,8 @@ spec:
   fluentd:
     cpu: {{ $fluentD.cpu }}
     memory: {{ $fluentD.memory }}
+    user: {{ $fluentdUser }}
+    password: {{ $fluentdPassword }}
   kibana:
     cpu: {{ $kibana.cpu }}
     memory: {{ $kibana.memory }}
