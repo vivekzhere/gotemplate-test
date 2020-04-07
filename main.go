@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 
-	yaml "gopkg.in/yaml.v2"
+	"sigs.k8s.io/yaml"
 
 	"github.wdf.sap.corp/i332859/gotemplate-test/renderer"
 )
